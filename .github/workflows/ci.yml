@@ -72,4 +72,4 @@ jobs:
           from: ${{ secrets.GMAIL_USERNAME }}
           body: |
             The CI/CD pipeline has failed.
-            Please check the Actions tab in the repository for details.
+            Please check the Actions tab in the repository.
