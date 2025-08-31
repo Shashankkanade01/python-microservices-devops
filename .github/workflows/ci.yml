@@ -35,17 +35,17 @@ jobs:
 
       - name: Build & Push Backend
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/backend ./backend
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/backend -f ./backend/Dockerfile ./backend
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/backend
 
       - name: Build & Push Frontend
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/frontend ./frontend
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/frontend -f ./frontend/Dockerfile ./frontend
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/frontend
 
       - name: Build & Push Logger
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/logger ./logger
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/logger -f ./logger/Dockerfile ./logger
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/logger
 
   notify:
@@ -60,9 +60,9 @@ jobs:
           server_port: 587
           username: ${{ secrets.GMAIL_USERNAME }}
           password: ${{ secrets.GMAIL_PASSWORD }}
-          subject: GitHub Actions Workflow Failed 
+          subject: GitHub Actions Workflow Failed
           to: shashank.kanade@sdbi.in
           from: ${{ secrets.GMAIL_USERNAME }}
           body: |
-            The CI/CD pipeline has failed : 
+            The CI/CD pipeline has failed.  
             Please check the Actions tab in the repository for details.
