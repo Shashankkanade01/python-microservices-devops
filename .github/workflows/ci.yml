@@ -1,0 +1,75 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "restore-old-commit" ]
+  pull_request:
+    branches: [ "restore-old-commit" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Python (for backend tests if needed)
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      # Install dependencies (only if root requirements.txt exists)
+      - name: Install dependencies (if exists)
+        run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      # Run tests (you can later replace with pytest, npm test, etc.)
+      - name: Run tests
+        run: echo "No tests yet"
+
+      # DockerHub login
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Build & Push Backend
+      - name: Build & Push Backend
+        run: |
+          docker build -t shashankk01/backend:new ./backend
+          docker push shashankk01/backend:new
+
+      # Build & Push Frontend
+      - name: Build & Push Frontend
+        run: |
+          docker build -t shashankk01/frontend:new ./frontend
+          docker push shashankk01/frontend:new
+
+      # Build & Push Logger
+      - name: Build & Push Logger
+        run: |
+          docker build -t shashankk01/logger:new ./logger
+          docker push shashankk01/logger:new
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: build
+    if: failure()
+    steps:
+      - name: Send Failure Email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.GMAIL_USERNAME }}
+          password: ${{ secrets.GMAIL_PASSWORD }}
+          subject: GitHub Actions Workflow Failed
+          to: shashank.kanade@sdbi.in
+          from: ${{ secrets.GMAIL_USERNAME }}
+          body: |
+            The CI/CD pipeline has failed.
+            Please check the Actions tab in the repository for details.
