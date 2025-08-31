@@ -24,8 +24,7 @@ jobs:
           pip install -r requirements.txt || true
 
       - name: Run tests
-        run: |
-          echo "No tests yet"
+        run: echo "No tests yet"
 
       - name: Log in to DockerHub
         uses: docker/login-action@v2
@@ -36,20 +35,20 @@ jobs:
       - name: Build & Push Backend
         working-directory: ./backend
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/backend -f Dockerfile .
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/backend
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/assignment:backend -f Dockerfile .
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/assignment:backend
 
       - name: Build & Push Frontend
         working-directory: ./frontend
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/frontend -f Dockerfile .
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/frontend
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/assignment:frontend -f Dockerfile .
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/assignment:frontend
 
       - name: Build & Push Logger
         working-directory: ./logger
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/logger -f Dockerfile .
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/logger
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/assignment:logger -f Dockerfile .
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/assignment:logger
 
   notify:
     runs-on: ubuntu-latest
