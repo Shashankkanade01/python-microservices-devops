@@ -33,22 +33,19 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build & Push Backend
-        working-directory: ./backend
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/assignment:backend -f Dockerfile .
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/assignment:backend
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/backend ./backend
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/backend
 
       - name: Build & Push Frontend
-        working-directory: ./frontend
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/assignment:frontend -f Dockerfile .
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/assignment:frontend
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/frontend ./frontend
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/frontend
 
       - name: Build & Push Logger
-        working-directory: ./logger
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/assignment:logger -f Dockerfile .
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/assignment:logger
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/logger ./logger
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/logger
 
   notify:
     runs-on: ubuntu-latest
