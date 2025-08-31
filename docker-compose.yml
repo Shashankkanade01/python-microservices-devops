@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   backend:
-    build: ./backend
+    image: shashankk01/backend:latest   # <-- Using image from DockerHub
     container_name: backend
     ports:
       - "5000:5000"
@@ -12,7 +12,7 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/postgres
 
   frontend:
-    build: ./frontend
+    image: shashankk01/frontend:latest   # <-- Using image from DockerHub
     container_name: frontend
     ports:
       - "8080:8080"   
@@ -22,7 +22,7 @@ services:
       - BACKEND_URL=http://backend:5000/api/data
 
   logger:
-    build: ./logger
+    image: shashankk01/logger:latest     # <-- Using image from DockerHub
     container_name: logger
     depends_on:
       - backend
